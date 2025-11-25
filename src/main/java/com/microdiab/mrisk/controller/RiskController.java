@@ -27,6 +27,7 @@ public class RiskController {
     @GetMapping("/risk/{patId}")
     public RiskLevel getRiskLevel(@PathVariable Long patId) {
         logger.info("Appel de getRiskLevel(@PathVariable Long patId = {})", patId.toString());
+        // Appeler le service pour récupérer les données nécessaires.
         return riskService.calculateRisk(patId);
     }
 }

@@ -39,6 +39,11 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-core</artifactId>
+        </dependency>
+
 
         <!-- Dependances pour les contrôleurs REST : Spring MVC, Jackson, Tomcat, Spring Boot Auto-Configuration -->
         <dependency>

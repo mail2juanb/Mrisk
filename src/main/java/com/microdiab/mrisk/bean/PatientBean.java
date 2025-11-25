@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 public class PatientBean {
 
@@ -51,6 +52,7 @@ public class PatientBean {
         return id;
     }
 
+    // NOTE : On ne fera jamais un set sur l'id.
 //    public void setId(Long id) {
 //        this.id = id;
 //    }
@@ -115,5 +117,18 @@ public class PatientBean {
                 ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +
                 '}';
+    }
+
+
+    /**
+     * Calcule l'âge du patient en fonction de sa date de naissance.
+     * @return L'âge du patient en années.
+     * @throws IllegalStateException si la date de naissance n'est pas définie.
+     */
+    public int getAge() {
+        if (this.dateofbirth == null) {
+            throw new IllegalStateException("La date de naissance du patient est obligatoire pour calculer l'âge.");
+        }
+        return Period.between(this.dateofbirth, LocalDate.now()).getYears();
     }
 }
