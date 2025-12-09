@@ -76,7 +76,7 @@ public class RiskService {
         // Récupération du Patient concerné depuis mPatient
         Optional<PatientBean> patient = microservicesProxy.getPatientById(patId);
         if (patient.isEmpty()) {
-            logger.info("Aucun Patient récupéré");
+            logger.warn("Aucun Patient récupéré");
             throw new PatientNotFoundException("Patient non trouvé avec l'ID : " + patId);
         }
 
@@ -93,7 +93,10 @@ public class RiskService {
         List<NoteBean> notes = microservicesProxy.getNotesByPatId(patId);
         if (notes.isEmpty()) {
             logger.info("Aucune note récupérée");
-            throw new EmptyNotesException("Aucune note récupérée pour le Patient avec l'ID : " + patId);
+            // NOTE : On ne lève pas d'exception car il est possible qu'il n'y ait pas encore de notes
+            // throw new EmptyNotesException("Aucune note récupérée pour le Patient avec l'ID : " + patId);
+            logger.warn("Aucune note récupérée pour le Patient avec l'ID : {}. Niveau de risque : Undefined", patId);
+            return new RiskLevel("Undefined", patId);
         } else {
             logger.info("ID = {} ; Nombre de notes récupérées = {}", patId, notes.size());
         }
@@ -111,6 +114,7 @@ public class RiskService {
                                         note.getNote().toLowerCase().contains(term.toLowerCase())
                                 )
                 )
+                // NOTE : Si le distinct est activé alors, on n'obtient pas les résultats demandés par le client
                 //.distinct()
                 .count();
 
