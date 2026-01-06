@@ -3,12 +3,10 @@ package com.microdiab.mrisk.exception;
 import feign.Response;
 import feign.Util;
 import feign.codec.ErrorDecoder;
-import jakarta.ws.rs.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 public class CustomErrorDecoder implements ErrorDecoder {
@@ -18,36 +16,49 @@ public class CustomErrorDecoder implements ErrorDecoder {
 
     @Override
     public Exception decode (String invoqueur, Response response) {
-        log.info("CustomErrorDecoder appelé avec status : {}", response.status());
-//        if (response.status() == 400) {
-//            return new PatientBadRequestException("Requête incorrecte..." + response.body() + "....." + response.status() + "...." + response.reason());
-//        }
+        //log.info("CustomErrorDecoder appelé avec status : {}", response.status());
+
+        // Lire le corps de la réponse
+        String body = null;
+
+        if (response.body() != null) {
+            try {
+                body = Util.toString(response.body().asReader(StandardCharsets.UTF_8));
+                //log.info("Corps de la réponse : {}", body);
+            } catch (IOException e) {
+                log.error("Error reading the response body", e);
+            }
+        }
+
+        // Reconstruire la réponse pour qu'elle reste lisible
+        Response newResponse = response.toBuilder()
+                .body(body, StandardCharsets.UTF_8)
+                .build();
+
+        // Gestion des erreurs spécifiques
         if (response.status() == 404) {
             // Vérifie le corps de la requête, ce doit être via le body pour différencier les erreurs.
             // Pas via la provenance
-            try {
-                String responseBody = Util.toString(new InputStreamReader(response.body().asInputStream(), StandardCharsets.UTF_8));
-                log.info("Corps de la réponse : {}", responseBody);
-            } catch (IOException e) {
-                log.error("Erreur lors de la lecture du corps de la réponse", e);
-                return new RuntimeException("Erreur inconnue lors de la récupération des données du corps de la réponse.");
-            }
-
-
             if (invoqueur.contains("/notes")) {
-                return new EmptyNotesException("Les notes du patient sont vides.");
+                return new EmptyNotesException("The patient's notes are empty.");
             } else if (invoqueur.contains("/patient/{id}")) {
-                return new PatientNotFoundException("Le Patient demandé n'existe pas.");
+                return new PatientNotFoundException("The requested patient does not exist.");
             } else {
-                return new NotFoundException("Cas non géré de la réponse 404");
+                return new NotFoundException("Resource not found: " + invoqueur);
+            }
+        } else if (response.status() == 400) {
+                return new BadRequestException("Incorrect request : " + body);
+            }
+            else if (response.status() == 409) {
+                return new ConflictException("Conflict detected : " + body);
+            }
+            else if (response.status() >= 500) {
+                return new ServerErrorException("Server error : " + body);
             }
 
-        }
-        
-//        if (response.status() == 409) {
-//            return new PatientDuplicateException("Un patient avec les mêmes informations existe déjà.");
-//        }
-        log.info("CustomErrorDecoder fin de la méthode...");
+        //log.info("CustomErrorDecoder fin de la méthode...");
+
+        // Par défaut, déléguer à l'ErrorDecoder par défaut
         return defaultErrorDecoder.decode(invoqueur, response);
     }
 }

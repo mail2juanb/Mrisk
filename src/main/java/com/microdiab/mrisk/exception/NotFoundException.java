@@ -6,13 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class EmptyNotesException extends RuntimeException {
+public class NotFoundException extends RuntimeException {
 
-    private static final Logger log = LoggerFactory.getLogger(PatientNotFoundException.class);
+    private static final Logger log = LoggerFactory.getLogger(NotFoundException.class);
 
-    public EmptyNotesException(String message) {
+    public NotFoundException(String message) {
         super(message);
         log.warn("*****  THROW Exception : {} - message : {}", getClass().getName(), getMessage());
     }
-
 }

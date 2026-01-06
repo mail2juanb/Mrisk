@@ -5,14 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-public class EmptyNotesException extends RuntimeException {
+@ResponseStatus(HttpStatus.CONFLICT)
+public class ConflictException extends RuntimeException {
 
-    private static final Logger log = LoggerFactory.getLogger(PatientNotFoundException.class);
+    private static final Logger log = LoggerFactory.getLogger(ConflictException.class);
 
-    public EmptyNotesException(String message) {
+    public ConflictException(String message) {
         super(message);
         log.warn("*****  THROW Exception : {} - message : {}", getClass().getName(), getMessage());
     }
-
 }

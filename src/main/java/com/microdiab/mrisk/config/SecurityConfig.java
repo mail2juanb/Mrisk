@@ -23,8 +23,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/**").hasRole("INTERNAL") // Seuls les utilisateurs avec le rôle INTERNAL peuvent accéder
                         .requestMatchers("/actuator/**").permitAll()
+                        .requestMatchers("/**").hasRole("INTERNAL") // Seuls les utilisateurs avec le rôle INTERNAL peuvent accéder
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())

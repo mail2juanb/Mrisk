@@ -1,8 +1,5 @@
 package com.microdiab.mrisk.bean;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -53,9 +50,9 @@ public class PatientBean {
     }
 
     // NOTE : On ne fera jamais un set sur l'id.
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getLastname() {
         return lastname;
@@ -127,7 +124,7 @@ public class PatientBean {
      */
     public int getAge() {
         if (this.dateofbirth == null) {
-            throw new IllegalStateException("La date de naissance du patient est obligatoire pour calculer l'âge.");
+            throw new IllegalStateException("The patient's date of birth is required to calculate their age.");
         }
         return Period.between(this.dateofbirth, LocalDate.now()).getYears();
     }
