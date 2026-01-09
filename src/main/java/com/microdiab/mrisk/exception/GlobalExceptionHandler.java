@@ -1,7 +1,5 @@
 package com.microdiab.mrisk.exception;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,62 +9,115 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.Map;
 
 
+/**
+ * Global exception handler for mRisk application.
+ * This class uses Spring's {@link RestControllerAdvice} to centralize exception handling
+ * across all controllers. It maps specific exceptions to appropriate HTTP responses
+ * and ensures consistent error formatting.
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+    /**
+     * Handles {@link PatientNotFoundException} by returning a 404 (Not Found) HTTP response.
+     *
+     * @param ex The exception to handle.
+     * @return A {@link ResponseEntity} containing the error message.
+     */
     @ExceptionHandler(PatientNotFoundException.class)
     public ResponseEntity<Map<String, String>> handlePatientNotFoundException(PatientNotFoundException ex) {
-        logger.warn("PatientNotFoundException: {}", ex.getMessage());
+        //logger.warn("PatientNotFoundException: {}", ex.getMessage());
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(Map.of("error", ex.getMessage()));
     }
 
+
+    /**
+     * Handles {@link EmptyNotesException} by returning a 404 (Not Found) HTTP response.
+     *
+     * @param ex The exception to handle.
+     * @return A {@link ResponseEntity} containing the error message.
+     */
     @ExceptionHandler(EmptyNotesException.class)
     public ResponseEntity<Map<String, String>> handleEmptyNotesException(EmptyNotesException ex) {
-        logger.warn("EmptyNotesException: {}", ex.getMessage());
+        //logger.warn("EmptyNotesException: {}", ex.getMessage());
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(Map.of("error", ex.getMessage()));
     }
 
+
+    /**
+     * Handles {@link NotFoundException} by returning a 404 (Not Found) HTTP response.
+     *
+     * @param ex The exception to handle.
+     * @return A {@link ResponseEntity} containing the error message.
+     */
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Map<String, String>> handleNotFoundException(NotFoundException ex) {
-        logger.warn("NotFoundException: {}", ex.getMessage());
+        //logger.warn("NotFoundException: {}", ex.getMessage());
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(Map.of("error", ex.getMessage()));
     }
 
+
+    /**
+     * Handles {@link BadRequestException} by returning a 400 (Bad Request) HTTP response.
+     *
+     * @param ex The exception to handle.
+     * @return A {@link ResponseEntity} containing the error message.
+     */
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<Map<String, String>> handleBadRequestException(BadRequestException ex) {
-        logger.warn("BadRequestException: {}", ex.getMessage());
+        //logger.warn("BadRequestException: {}", ex.getMessage());
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(Map.of("error", ex.getMessage()));
     }
 
+
+    /**
+     * Handles {@link ConflictException} by returning a 409 (Conflict) HTTP response.
+     *
+     * @param ex The exception to handle.
+     * @return A {@link ResponseEntity} containing the error message.
+     */
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<Map<String, String>> handleConflictException(ConflictException ex) {
-        logger.warn("ConflictException: {}", ex.getMessage());
+        //logger.warn("ConflictException: {}", ex.getMessage());
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
                 .body(Map.of("error", ex.getMessage()));
     }
 
+
+    /**
+     * Handles {@link ServerErrorException} by returning a 500 (Internal Server Error) HTTP response.
+     *
+     * @param ex The exception to handle.
+     * @return A {@link ResponseEntity} containing the error message.
+     */
     @ExceptionHandler(ServerErrorException.class)
     public ResponseEntity<Map<String, String>> handleServerErrorException(ServerErrorException ex) {
-        logger.warn("ServerErrorException: {}", ex.getMessage());
+        //logger.warn("ServerErrorException: {}", ex.getMessage());
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Map.of("error", ex.getMessage()));
     }
 
+
+    /**
+     * Handles generic exceptions by returning a 500 (Internal Server Error) HTTP response.
+     *
+     * @param ex The exception to handle.
+     * @return A {@link ResponseEntity} containing a generic error message.
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGenericException(Exception ex) {
-        logger.warn("Unexpected error: {}", ex.getMessage(), ex);
+        //logger.warn("Unexpected error: {}", ex.getMessage(), ex);
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Map.of("error", "An unexpected error occurred"));

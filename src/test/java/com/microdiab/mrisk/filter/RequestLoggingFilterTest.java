@@ -57,6 +57,7 @@ class RequestLoggingFilterTest {
         listAppender = new ListAppender<>();
         listAppender.start();
         logger.addAppender(listAppender);
+        logger.setLevel(Level.DEBUG);
     }
 
     @Test
@@ -84,7 +85,7 @@ class RequestLoggingFilterTest {
 
         List<ILoggingEvent> logsList = listAppender.list;
         assertThat(logsList).hasSize(1);
-        assertThat(logsList.getFirst().getLevel()).isEqualTo(Level.INFO);
+        assertThat(logsList.getFirst().getLevel()).isEqualTo(Level.DEBUG);
         assertThat(logsList.getFirst().getFormattedMessage())
                 .contains("john.doe")
                 .contains("ROLE_USER")

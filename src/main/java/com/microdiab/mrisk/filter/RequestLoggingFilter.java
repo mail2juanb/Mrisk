@@ -13,11 +13,46 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+
+/**
+ * Custom request logging filter for the *mrisk* microservice in the *MicroDiab* project.
+ * This filter extends {@link OncePerRequestFilter} to ensure it is executed once per request.
+ * It logs detailed information about incoming HTTP requests, including:
+ * <ul>
+ *   <li>Authenticated user details (username and roles)</li>
+ *   <li>HTTP method and URI</li>
+ *   <li>Client IP and User-Agent for unauthenticated requests</li>
+ * </ul>
+ *
+ * This filter is designed to work within the *mnotes* microservice architecture,
+ * which is part of the *MicroDiab* application for diabetes analysis.
+ * It integrates with Spring Security to access the current authentication context
+ * and logs relevant information for monitoring and debugging purposes.
+ *
+ * This filter is automatically registered as a Spring component
+ * and integrated into the servlet filter chain.
+ *
+ * @see org.springframework.web.filter.OncePerRequestFilter
+ * @see org.springframework.stereotype.Component
+ * @see org.springframework.security.core.Authentication
+ * @see org.springframework.security.core.context.SecurityContextHolder
+ */
 @Component
 public class RequestLoggingFilter extends OncePerRequestFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(RequestLoggingFilter.class);
 
+
+    /**
+     * Processes incoming HTTP requests to log authentication and request details.
+     * This method is called by the servlet container for each request.
+     *
+     * @param request     The HTTP servlet request.
+     * @param response    The HTTP servlet response.
+     * @param filterChain The filter chain for invoking the next filter or servlet.
+     * @throws ServletException If a servlet-related error occurs.
+     * @throws IOException      If an I/O error occurs during processing.
+     */
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -34,7 +69,7 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
             String method = request.getMethod();
             String uri = request.getRequestURI();
 
-            logger.info("User '{}' with roles [{}] accessed {} {}", username, roles, method, uri);
+            logger.debug("User '{}' with roles [{}] accessed {} {}", username, roles, method, uri);
         } else {
             // Log pour les requêtes non authentifiées
             String clientIp = request.getRemoteAddr();

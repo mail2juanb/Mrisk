@@ -46,10 +46,70 @@ class CustomErrorDecoderTest {
     }
 
     @Test
+    void testDecode_404_EmptyNotesException_WithEmpty() {
+        // Arrange - Test avec le mot "empty" dans le body
+        String methodKey = "PatientClient#getNotes(Long)";
+        String body = "The notes are empty";
+        Response response = createResponse(404, body);
+
+        // Act
+        Exception exception = customErrorDecoder.decode(methodKey, response);
+
+        // Assert
+        assertInstanceOf(EmptyNotesException.class, exception);
+        assertEquals("The patient's notes are empty.", exception.getMessage());
+    }
+
+    @Test
+    void testDecode_404_EmptyNotesException_CaseInsensitive() {
+        // Arrange - Test l'insensibilité à la casse pour "notes"
+        String methodKey = "PatientClient#getNotes(Long)";
+        String body = "NOTES NOT FOUND";
+        Response response = createResponse(404, body);
+
+        // Act
+        Exception exception = customErrorDecoder.decode(methodKey, response);
+
+        // Assert
+        assertInstanceOf(EmptyNotesException.class, exception);
+        assertEquals("The patient's notes are empty.", exception.getMessage());
+    }
+
+    @Test
+    void testDecode_404_EmptyNotesException_CaseInsensitiveEmpty() {
+        // Arrange - Test l'insensibilité à la casse pour "empty"
+        String methodKey = "PatientClient#getNotes(Long)";
+        String body = "The data is EMPTY";
+        Response response = createResponse(404, body);
+
+        // Act
+        Exception exception = customErrorDecoder.decode(methodKey, response);
+
+        // Assert
+        assertInstanceOf(EmptyNotesException.class, exception);
+        assertEquals("The patient's notes are empty.", exception.getMessage());
+    }
+
+    @Test
     void testDecode_404_PatientNotFoundException() {
         // Arrange
         String methodKey = "PatientClient#getPatient(Long)/patient/{id}";
         String body = "Patient not found";
+        Response response = createResponse(404, body);
+
+        // Act
+        Exception exception = customErrorDecoder.decode(methodKey, response);
+
+        // Assert
+        assertInstanceOf(PatientNotFoundException.class, exception);
+        assertEquals("The requested patient does not exist.", exception.getMessage());
+    }
+
+    @Test
+    void testDecode_404_PatientNotFoundException_CaseInsensitive() {
+        // Arrange - Test l'insensibilité à la casse pour "patient"
+        String methodKey = "PatientClient#getPatient(Long)";
+        String body = "PATIENT does not exist";
         Response response = createResponse(404, body);
 
         // Act
@@ -74,6 +134,49 @@ class CustomErrorDecoderTest {
         assertInstanceOf(NotFoundException.class, exception);
         assertTrue(exception.getMessage().contains("Resource not found"));
         assertTrue(exception.getMessage().contains(methodKey));
+    }
+
+    @Test
+    void testDecode_404_NotFoundException_WithNullBody() {
+        // Arrange - Test 404 avec body null
+        String methodKey = "SomeClient#getResource()";
+        Response response = createResponseWithoutBody(404);
+
+        // Act
+        Exception exception = customErrorDecoder.decode(methodKey, response);
+
+        // Assert
+        assertInstanceOf(NotFoundException.class, exception);
+        assertEquals("Resource not found: " + methodKey, exception.getMessage());
+    }
+
+    @Test
+    void testDecode_404_NotFoundException_WithEmptyBody() {
+        // Arrange - Test 404 avec body vide
+        String methodKey = "SomeClient#getResource()";
+        Response response = createResponse(404, "");
+
+        // Act
+        Exception exception = customErrorDecoder.decode(methodKey, response);
+
+        // Assert
+        assertInstanceOf(NotFoundException.class, exception);
+        assertEquals("Resource not found: " + methodKey, exception.getMessage());
+    }
+
+    @Test
+    void testDecode_404_NotFoundException_WithBodyNotContainingNotesOrPatient() {
+        // Arrange - Test 404 avec body qui ne contient ni "notes" ni "patient"
+        String methodKey = "SomeClient#getResource()";
+        String body = "Something else not found";
+        Response response = createResponse(404, body);
+
+        // Act
+        Exception exception = customErrorDecoder.decode(methodKey, response);
+
+        // Assert
+        assertInstanceOf(NotFoundException.class, exception);
+        assertEquals("Resource not found: " + methodKey, exception.getMessage());
     }
 
     @Test
@@ -130,6 +233,22 @@ class CustomErrorDecoderTest {
         String methodKey = "PatientClient#getPatient(Long)";
         String body = "Service unavailable";
         Response response = createResponse(503, body);
+
+        // Act
+        Exception exception = customErrorDecoder.decode(methodKey, response);
+
+        // Assert
+        assertInstanceOf(ServerErrorException.class, exception);
+        assertTrue(exception.getMessage().contains("Server error"));
+        assertTrue(exception.getMessage().contains(body));
+    }
+
+    @Test
+    void testDecode_501_ServerErrorException() {
+        // Arrange - Test d'autres codes >= 500
+        String methodKey = "PatientClient#getPatient(Long)";
+        String body = "Not implemented";
+        Response response = createResponse(501, body);
 
         // Act
         Exception exception = customErrorDecoder.decode(methodKey, response);
@@ -234,6 +353,54 @@ class CustomErrorDecoderTest {
         assertInstanceOf(BadRequestException.class, exception);
         assertTrue(exception.getMessage().contains("Incorrect request"));
         assertTrue(exception.getMessage().contains("null")); // Le body sera null car non lisible
+    }
+
+    @Test
+    void testDecode_IOExceptionWhileReadingBody_404() {
+        // Arrange - Test IOException pour un 404
+        String methodKey = "PatientClient#getPatient(Long)";
+
+        Response.Body body = new Response.Body() {
+            @Override
+            public Integer length() {
+                return null;
+            }
+
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
+
+            @Override
+            public java.io.InputStream asInputStream() throws java.io.IOException {
+                throw new java.io.IOException("Simulated IO error");
+            }
+
+            @Override
+            public java.io.Reader asReader(java.nio.charset.Charset charset) throws java.io.IOException {
+                throw new java.io.IOException("Simulated IO error");
+            }
+
+            @Override
+            public void close() throws java.io.IOException {
+                // Nothing to close
+            }
+        };
+
+        Response response = Response.builder()
+                .status(404)
+                .reason("Not Found")
+                .request(request)
+                .headers(new HashMap<>())
+                .body(body)
+                .build();
+
+        // Act
+        Exception exception = customErrorDecoder.decode(methodKey, response);
+
+        // Assert
+        assertInstanceOf(NotFoundException.class, exception);
+        assertEquals("Resource not found: " + methodKey, exception.getMessage());
     }
 
     // Méthodes utilitaires pour créer des réponses de test

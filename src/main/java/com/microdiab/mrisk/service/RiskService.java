@@ -48,7 +48,13 @@ import java.util.Optional;
 
             */
 
-
+/**
+ * Service class for calculating the diabetes risk level of a patient.
+ * This class interacts with microservices to fetch patient and note data,
+ * and applies business rules to determine the risk level.
+ * <p>The {@code RiskService} class provides methods to calculate the diabetes risk level
+ * of a patient based on their notes and demographic data.</p>
+ */
 @Service
 public class RiskService {
 
@@ -59,16 +65,22 @@ public class RiskService {
 
 
     /**
-     * Retourne la liste des termes déclencheurs pour le calcul du risque.
+     * Returns the list of trigger terms used for risk calculation.
      *
-     * @return Liste des termes déclencheurs.
+     * @return A list of trigger terms.
      */
     private static List<String> getTriggerTerms() {
         return List.of("Hémoglobine A1C", "Microalbumine", "Taille", "Poids", "Fumeur", "Fumeuse",
                 "Anormal", "Cholestérol", "Vertiges", "Rechute", "Réaction", "Anticorps");
     }
 
-
+    /**
+     * Calculates the diabetes risk level for a patient based on their notes and demographic data.
+     *
+     * @param patId The unique identifier of the patient.
+     * @return The calculated risk level for the patient.
+     * @throws PatientNotFoundException If the patient is not found.
+     */
     public RiskLevel calculateRisk(Long patId) {
         //logger.info("Appel de calculateRisk(Long patId = {})", patId.toString());
 
@@ -123,7 +135,7 @@ public class RiskService {
         //        patId, triggerCount, patientAge, patientGender);
 
         if (triggerCount == 0) {
-            logger.info("No trigger terms found. Risk level: None");
+            //logger.info("No trigger terms found. Risk level: None");
             return new RiskLevel("None", patId);
         } else {
             if (patientAge > 30) {

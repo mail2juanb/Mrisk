@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class CustomInfoContributorTest {
+class CustomInfoContributorTest {
 
     @Mock
     private Environment environment;
@@ -25,10 +25,11 @@ public class CustomInfoContributorTest {
     @Test
     void contribute_ShouldAddAppInfoToBuilder() {
         // Arrange
-        when(environment.getProperty("info.app.version", "mrisk - Version non définie")).thenReturn("1.0.0");
-        when(environment.getProperty("info.app.description", "mrisk - Description non définie")).thenReturn("Gestion des patients");
-        when(environment.getProperty("info.app.documentation", "mrisk - Documentation non définie")).thenReturn("https://docs.microdiab.com/mrisk");
-        when(environment.getProperty("info.app.information", "mrisk - Informations non définies")).thenReturn("Microservice de gestion des patients");
+        when(environment.getProperty("info.app.version", "mrisk - Version not defined")).thenReturn("1.0.0");
+        when(environment.getProperty("info.app.description", "mrisk - Description not defined")).thenReturn("Gestion des patients");
+        when(environment.getProperty("info.app.documentation.swagger", "mrisk - Swagger Documentation not defined")).thenReturn("https://docs.microdiab.com/mrisk/swagger");
+        when(environment.getProperty("info.app.documentation.javadoc", "mrisk - Javadoc Documentation not defined")).thenReturn("https://docs.microdiab.com/mrisk/javadoc");
+        when(environment.getProperty("info.app.information", "mrisk - Informations not defined")).thenReturn("Microservice de gestion des patients");
 
         Info.Builder builder = new Info.Builder();
 
@@ -47,7 +48,8 @@ public class CustomInfoContributorTest {
 
         assertEquals("1.0.0", appInfo.get("version"));
         assertEquals("Gestion des patients", appInfo.get("description"));
-        assertEquals("https://docs.microdiab.com/mrisk", appInfo.get("documentation"));
+        assertEquals("https://docs.microdiab.com/mrisk/swagger", appInfo.get("documentation-swagger"));
+        assertEquals("https://docs.microdiab.com/mrisk/javadoc", appInfo.get("documentation-javadoc"));
         assertEquals("Microservice de gestion des patients", appInfo.get("information"));
         assertNotNull(appInfo.get("lastUpdated"));
     }
@@ -55,10 +57,11 @@ public class CustomInfoContributorTest {
     @Test
     void contribute_ShouldUseDefaultValuesIfPropertiesAreMissing() {
         // Arrange
-        when(environment.getProperty("info.app.version", "mrisk - Version non définie")).thenReturn("mrisk - Version non définie");
-        when(environment.getProperty("info.app.description", "mrisk - Description non définie")).thenReturn("mrisk - Description non définie");
-        when(environment.getProperty("info.app.documentation", "mrisk - Documentation non définie")).thenReturn("mrisk - Documentation non définie");
-        when(environment.getProperty("info.app.information", "mrisk - Informations non définies")).thenReturn("mrisk - Informations non définies");
+        when(environment.getProperty("info.app.version", "mrisk - Version not defined")).thenReturn("mrisk - Version not defined");
+        when(environment.getProperty("info.app.description", "mrisk - Description not defined")).thenReturn("mrisk - Description not defined");
+        when(environment.getProperty("info.app.documentation.swagger", "mrisk - Swagger Documentation not defined")).thenReturn("mrisk - Swagger Documentation not defined");
+        when(environment.getProperty("info.app.documentation.javadoc", "mrisk - Javadoc Documentation not defined")).thenReturn("mrisk - Javadoc Documentation not defined");
+        when(environment.getProperty("info.app.information", "mrisk - Informations not defined")).thenReturn("mrisk - Informations not defined");
 
         Info.Builder builder = new Info.Builder();
 
@@ -75,10 +78,12 @@ public class CustomInfoContributorTest {
         @SuppressWarnings("unchecked")
         Map<String, Object> appInfo = (Map<String, Object>) details.get("app");
 
-        assertEquals("mrisk - Version non définie", appInfo.get("version"));
-        assertEquals("mrisk - Description non définie", appInfo.get("description"));
-        assertEquals("mrisk - Documentation non définie", appInfo.get("documentation"));
-        assertEquals("mrisk - Informations non définies", appInfo.get("information"));
+        assertEquals("mrisk - Version not defined", appInfo.get("version"));
+        assertEquals("mrisk - Description not defined", appInfo.get("description"));
+        assertEquals("mrisk - Swagger Documentation not defined", appInfo.get("documentation-swagger"));
+        assertEquals("mrisk - Javadoc Documentation not defined", appInfo.get("documentation-javadoc"));
+        assertEquals("mrisk - Informations not defined", appInfo.get("information"));
         assertNotNull(appInfo.get("lastUpdated"));
     }
+
 }

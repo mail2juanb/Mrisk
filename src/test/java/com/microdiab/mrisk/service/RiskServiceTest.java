@@ -24,7 +24,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("Tests unitaires RiskService")
 class RiskServiceTest {
 
     @Mock
@@ -62,11 +61,9 @@ class RiskServiceTest {
     }
 
     @Nested
-    @DisplayName("Tests d'exception")
     class ExceptionTests {
 
         @Test
-        @DisplayName("Devrait lancer PatientNotFoundException si le patient n'existe pas")
         void shouldThrowPatientNotFoundException_whenPatientNotFound() {
             // Arrange
             Long patId = 999L;
@@ -83,11 +80,9 @@ class RiskServiceTest {
     }
 
     @Nested
-    @DisplayName("Tests niveau de risque: None/Undefined")
     class NoneRiskTests {
 
         @Test
-        @DisplayName("Devrait retourner 'Undefined' si aucune note n'existe")
         void shouldReturnUndefined_whenNoNotes() {
             // Arrange
             when(microservicesProxy.getPatientById(1L)).thenReturn(Optional.of(patientOver30));
@@ -102,7 +97,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait retourner 'None' si aucun terme déclencheur n'est présent")
         void shouldReturnNone_whenNoTriggerTerms() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -122,7 +116,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait retourner 'None' pour patient >30 ans avec 1 seul déclencheur")
         void shouldReturnNone_whenOver30WithOneTrigger() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -140,7 +133,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait retourner 'None' pour homme <30 ans avec moins de 3 déclencheurs")
         void shouldReturnNone_whenMaleUnder30WithLessThan3Triggers() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -158,7 +150,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait retourner 'None' pour femme <30 ans avec 2 déclencheurs")
         void shouldReturnNone_whenFemaleUnder30With2Triggers() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -176,7 +167,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait retourner 'None' pour femme <30 ans avec 3 déclencheurs")
         void shouldReturnNone_whenFemaleUnder30With3Triggers() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -194,7 +184,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait retourner 'None' pour patient <30 ans avec genre non-binaire et déclencheurs")
         void shouldReturnNone_whenUnder30WithOtherGenderAndTriggers() {
             // Arrange
             PatientBean patientOtherGender = new PatientBean();
@@ -219,11 +208,9 @@ class RiskServiceTest {
     }
 
     @Nested
-    @DisplayName("Tests niveau de risque: Borderline")
     class BorderlineRiskTests {
 
         @Test
-        @DisplayName("Devrait retourner 'Borderline' pour patient >30 ans avec 2 déclencheurs")
         void shouldReturnBorderline_whenOver30With2Triggers() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -241,7 +228,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait retourner 'Borderline' pour patient >30 ans avec 3 déclencheurs")
         void shouldReturnBorderline_whenOver30With3Triggers() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -259,7 +245,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait retourner 'Borderline' pour patient >30 ans avec 4 déclencheurs")
         void shouldReturnBorderline_whenOver30With4Triggers() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -277,7 +262,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait retourner 'Borderline' pour patient >30 ans avec 5 déclencheurs")
         void shouldReturnBorderline_whenOver30With5Triggers() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -296,11 +280,9 @@ class RiskServiceTest {
     }
 
     @Nested
-    @DisplayName("Tests niveau de risque: In Danger")
     class InDangerRiskTests {
 
         @Test
-        @DisplayName("Devrait retourner 'In Danger' pour patient >30 ans avec 6 déclencheurs")
         void shouldReturnInDanger_whenOver30With6Triggers() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -318,7 +300,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait retourner 'In Danger' pour patient >30 ans avec 7 déclencheurs")
         void shouldReturnInDanger_whenOver30With7Triggers() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -336,7 +317,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait retourner 'In Danger' pour homme <30 ans avec 3 déclencheurs")
         void shouldReturnInDanger_whenMaleUnder30With3Triggers() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -354,7 +334,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait retourner 'In Danger' pour homme <30 ans avec 4 déclencheurs")
         void shouldReturnInDanger_whenMaleUnder30With4Triggers() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -372,7 +351,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait retourner 'In Danger' pour femme <30 ans avec 4 déclencheurs")
         void shouldReturnInDanger_whenFemaleUnder30With4Triggers() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -390,7 +368,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait retourner 'In Danger' pour femme <30 ans avec 5 déclencheurs")
         void shouldReturnInDanger_whenFemaleUnder30With5Triggers() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -408,7 +385,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait retourner 'In Danger' pour femme <30 ans avec 6 déclencheurs")
         void shouldReturnInDanger_whenFemaleUnder30With6Triggers() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -427,11 +403,9 @@ class RiskServiceTest {
     }
 
     @Nested
-    @DisplayName("Tests niveau de risque: Early onset")
     class EarlyOnsetRiskTests {
 
         @Test
-        @DisplayName("Devrait retourner 'Early onset' pour patient >30 ans avec 8 déclencheurs")
         void shouldReturnEarlyOnset_whenOver30With8Triggers() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -449,7 +423,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait retourner 'Early onset' pour patient >30 ans avec 9 déclencheurs")
         void shouldReturnEarlyOnset_whenOver30With9Triggers() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -467,7 +440,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait retourner 'Early onset' pour patient >30 ans avec plus de 8 déclencheurs")
         void shouldReturnEarlyOnset_whenOver30WithMoreThan8Triggers() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -485,7 +457,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait retourner 'Early onset' pour homme <30 ans avec 5 déclencheurs")
         void shouldReturnEarlyOnset_whenMaleUnder30With5Triggers() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -503,7 +474,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait retourner 'Early onset' pour homme <30 ans avec 6 déclencheurs")
         void shouldReturnEarlyOnset_whenMaleUnder30With6Triggers() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -521,7 +491,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait retourner 'Early onset' pour homme <30 ans avec plus de 5 déclencheurs")
         void shouldReturnEarlyOnset_whenMaleUnder30WithMoreThan5Triggers() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -539,7 +508,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait retourner 'Early onset' pour femme <30 ans avec 7 déclencheurs")
         void shouldReturnEarlyOnset_whenFemaleUnder30With7Triggers() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -557,7 +525,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait retourner 'Early onset' pour femme <30 ans avec 8 déclencheurs")
         void shouldReturnEarlyOnset_whenFemaleUnder30With8Triggers() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -575,7 +542,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait retourner 'Early onset' pour femme <30 ans avec plus de 7 déclencheurs")
         void shouldReturnEarlyOnset_whenFemaleUnder30WithMoreThan7Triggers() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -594,11 +560,9 @@ class RiskServiceTest {
     }
 
     @Nested
-    @DisplayName("Tests de sensibilité à la casse et tous les termes déclencheurs")
     class TriggerTermsTests {
 
         @Test
-        @DisplayName("Devrait détecter les termes déclencheurs indépendamment de la casse")
         void shouldDetectTriggersRegardlessOfCase() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -616,7 +580,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait détecter tous les termes déclencheurs possibles")
         void shouldDetectAllPossibleTriggerTerms() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -644,7 +607,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait détecter Fumeur et Fumeuse comme termes différents")
         void shouldDetectFumeurAndFumeuseAsSeparateTerms() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -662,7 +624,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait filtrer correctement les termes dans les notes (test filter)")
         void shouldFilterTermsInNotesCorrectly() {
             // Arrange
             List<NoteBean> notes = List.of(
@@ -683,11 +644,9 @@ class RiskServiceTest {
     }
 
     @Nested
-    @DisplayName("Tests cas limites âge 30 ans")
     class EdgeCaseAge30Tests {
 
         @Test
-        @DisplayName("Devrait traiter un patient de 30 ans comme <=30 ans (homme avec 3 déclencheurs)")
         void shouldTreatAge30AsUnder30_maleWith3Triggers() {
             // Arrange
             PatientBean patient30 = new PatientBean();
@@ -711,7 +670,6 @@ class RiskServiceTest {
         }
 
         @Test
-        @DisplayName("Devrait traiter un patient de 31 ans comme >30 ans (6 déclencheurs)")
         void shouldTreatAge31AsOver30_with6Triggers() {
             // Arrange
             PatientBean patient31 = new PatientBean();
@@ -740,5 +698,313 @@ class RiskServiceTest {
         note.setPatId(id);
         note.setNote(noteContent);
         return note;
+    }
+
+    @Nested
+    class AdditionalCoverageTests {
+
+        @Test
+        @DisplayName("Should count duplicate trigger terms in multiple notes")
+        void shouldCountDuplicateTriggersAcrossMultipleNotes() {
+            // Arrange - Teste le comportement sans .distinct()
+            List<NoteBean> notes = List.of(
+                    createNote(1L, "Patient fumeur"),
+                    createNote(2L, "Toujours fumeur avec Cholestérol"),
+                    createNote(3L, "Fumeur avec Vertiges")
+            );
+
+            when(microservicesProxy.getPatientById(1L)).thenReturn(Optional.of(patientOver30));
+            when(microservicesProxy.getNotesByPatId(1L)).thenReturn(notes);
+
+            // Act
+            RiskLevel result = riskService.calculateRisk(1L);
+
+            // Assert
+            // Fumeur apparaît 3 fois + Cholestérol + Vertiges = 5 triggers
+            assertThat(result.getRiskLevel()).isEqualTo("Borderline");
+        }
+
+        @Test
+        @DisplayName("Should handle trigger terms with accents correctly")
+        void shouldHandleAccentedTriggerTerms() {
+            // Arrange
+            List<NoteBean> notes = List.of(
+                    createNote(1L, "Hémoglobine A1C élevée, Cholestérol élevé")
+            );
+
+            when(microservicesProxy.getPatientById(1L)).thenReturn(Optional.of(patientOver30));
+            when(microservicesProxy.getNotesByPatId(1L)).thenReturn(notes);
+
+            // Act
+            RiskLevel result = riskService.calculateRisk(1L);
+
+            // Assert
+            assertThat(result.getRiskLevel()).isEqualTo("Borderline");
+        }
+
+        @Test
+        @DisplayName("Should handle trigger terms in middle of words")
+        void shouldDetectTriggersEvenInMiddleOfWords() {
+            // Arrange
+            List<NoteBean> notes = List.of(
+                    createNote(1L, "Nonfumeur avec anticholestérol")
+            );
+
+            when(microservicesProxy.getPatientById(1L)).thenReturn(Optional.of(patientOver30));
+            when(microservicesProxy.getNotesByPatId(1L)).thenReturn(notes);
+
+            // Act
+            RiskLevel result = riskService.calculateRisk(1L);
+
+            // Assert
+            // "fumeur" est dans "Nonfumeur", "Cholestérol" est dans "anticholestérol"
+            assertThat(result.getRiskLevel()).isEqualTo("Borderline");
+        }
+
+        @Test
+        @DisplayName("Should return None for male under 30 with exactly 2 triggers")
+        void shouldReturnNone_whenMaleUnder30WithExactly2Triggers() {
+            // Arrange
+            List<NoteBean> notes = List.of(
+                    createNote(1L, "Cholestérol et Vertiges")
+            );
+
+            when(microservicesProxy.getPatientById(2L)).thenReturn(Optional.of(patientMaleUnder30));
+            when(microservicesProxy.getNotesByPatId(2L)).thenReturn(notes);
+
+            // Act
+            RiskLevel result = riskService.calculateRisk(2L);
+
+            // Assert
+            assertThat(result.getRiskLevel()).isEqualTo("None");
+        }
+
+        @Test
+        @DisplayName("Should handle very long notes with multiple trigger terms")
+        void shouldHandleLongNotesWithMultipleTriggers() {
+            // Arrange
+            List<NoteBean> notes = List.of(
+                    createNote(1L, "Consultation du patient. Observations: Hémoglobine A1C élevée, " +
+                            "présence de Microalbumine, Taille et Poids enregistrés, patient Fumeur, " +
+                            "résultats Anormal pour Cholestérol, patient rapporte Vertiges fréquents, " +
+                            "Rechute observée, Réaction allergique aux médicaments, Anticorps détectés")
+            );
+
+            when(microservicesProxy.getPatientById(1L)).thenReturn(Optional.of(patientOver30));
+            when(microservicesProxy.getNotesByPatId(1L)).thenReturn(notes);
+
+            // Act
+            RiskLevel result = riskService.calculateRisk(1L);
+
+            // Assert
+            assertThat(result.getRiskLevel()).isEqualTo("Early onset"); // 11 triggers
+        }
+
+        @Test
+        @DisplayName("Should handle empty note content")
+        void shouldHandleEmptyNoteContent() {
+            // Arrange
+            List<NoteBean> notes = List.of(
+                    createNote(1L, ""),
+                    createNote(2L, "   "),
+                    createNote(3L, "Rien de particulier")
+            );
+
+            when(microservicesProxy.getPatientById(1L)).thenReturn(Optional.of(patientOver30));
+            when(microservicesProxy.getNotesByPatId(1L)).thenReturn(notes);
+
+            // Act
+            RiskLevel result = riskService.calculateRisk(1L);
+
+            // Assert
+            assertThat(result.getRiskLevel()).isEqualTo("None");
+        }
+
+        @Test
+        @DisplayName("Should handle special characters in notes")
+        void shouldHandleSpecialCharactersInNotes() {
+            // Arrange
+            List<NoteBean> notes = List.of(
+                    createNote(1L, "Patient: fumeur!!! Cholestérol??? Vertiges... (Anormal)")
+            );
+
+            when(microservicesProxy.getPatientById(1L)).thenReturn(Optional.of(patientOver30));
+            when(microservicesProxy.getNotesByPatId(1L)).thenReturn(notes);
+
+            // Act
+            RiskLevel result = riskService.calculateRisk(1L);
+
+            // Assert
+            assertThat(result.getRiskLevel()).isEqualTo("Borderline"); // 4 triggers
+        }
+
+        @Test
+        @DisplayName("Should verify microservicesProxy is called with correct parameters")
+        void shouldVerifyCorrectProxyInteractions() {
+            // Arrange
+            Long patId = 1L;
+            when(microservicesProxy.getPatientById(patId)).thenReturn(Optional.of(patientOver30));
+            when(microservicesProxy.getNotesByPatId(patId)).thenReturn(List.of(
+                    createNote(1L, "Test")
+            ));
+
+            // Act
+            riskService.calculateRisk(patId);
+
+            // Assert
+            verify(microservicesProxy, times(1)).getPatientById(patId);
+            verify(microservicesProxy, times(1)).getNotesByPatId(patId);
+            verifyNoMoreInteractions(microservicesProxy);
+        }
+
+        @Test
+        @DisplayName("Should return correct patId in RiskLevel for all risk levels")
+        void shouldReturnCorrectPatIdInRiskLevel() {
+            // Arrange
+            Long expectedPatId = 42L;
+            PatientBean patient = new PatientBean();
+            patient.setId(expectedPatId);
+            patient.setDateofbirth(LocalDate.now().minusYears(35));
+            patient.setGender("M");
+
+            List<NoteBean> notes = List.of(
+                    createNote(expectedPatId, "Fumeur, Cholestérol")
+            );
+
+            when(microservicesProxy.getPatientById(expectedPatId)).thenReturn(Optional.of(patient));
+            when(microservicesProxy.getNotesByPatId(expectedPatId)).thenReturn(notes);
+
+            // Act
+            RiskLevel result = riskService.calculateRisk(expectedPatId);
+
+            // Assert
+            assertThat(result.getPatId()).isEqualTo(expectedPatId);
+            assertThat(result.getRiskLevel()).isEqualTo("Borderline");
+        }
+
+        @Test
+        @DisplayName("Should handle gender case variations (m, M, f, F)")
+        void shouldHandleGenderCaseVariations() {
+            // Test with lowercase 'm'
+            PatientBean patientLowercaseM = new PatientBean();
+            patientLowercaseM.setId(10L);
+            patientLowercaseM.setDateofbirth(LocalDate.now().minusYears(25));
+            patientLowercaseM.setGender("m");
+
+            List<NoteBean> notes = List.of(
+                    createNote(10L, "Fumeur, Cholestérol, Vertiges")
+            );
+
+            when(microservicesProxy.getPatientById(10L)).thenReturn(Optional.of(patientLowercaseM));
+            when(microservicesProxy.getNotesByPatId(10L)).thenReturn(notes);
+
+            RiskLevel result = riskService.calculateRisk(10L);
+
+            assertThat(result.getRiskLevel()).isEqualTo("In Danger");
+        }
+
+        @Test
+        @DisplayName("Should handle exactly 30 years old female with 4 triggers")
+        void shouldHandleAge30FemaleWith4Triggers() {
+            // Arrange
+            PatientBean patientFemale30 = new PatientBean();
+            patientFemale30.setId(11L);
+            patientFemale30.setDateofbirth(LocalDate.now().minusYears(30));
+            patientFemale30.setGender("F");
+
+            List<NoteBean> notes = List.of(
+                    createNote(11L, "Fumeuse, Cholestérol, Vertiges, Anormal")
+            );
+
+            when(microservicesProxy.getPatientById(11L)).thenReturn(Optional.of(patientFemale30));
+            when(microservicesProxy.getNotesByPatId(11L)).thenReturn(notes);
+
+            // Act
+            RiskLevel result = riskService.calculateRisk(11L);
+
+            // Assert
+            assertThat(result.getRiskLevel()).isEqualTo("In Danger");
+        }
+    }
+
+    @Nested
+    class BoundaryValueTests {
+
+        @Test
+        @DisplayName("Boundary: Over 30 with exactly 1 trigger should be None")
+        void testOver30With1Trigger() {
+            List<NoteBean> notes = List.of(createNote(1L, "Fumeur"));
+            when(microservicesProxy.getPatientById(1L)).thenReturn(Optional.of(patientOver30));
+            when(microservicesProxy.getNotesByPatId(1L)).thenReturn(notes);
+
+            RiskLevel result = riskService.calculateRisk(1L);
+            assertThat(result.getRiskLevel()).isEqualTo("None");
+        }
+
+        @Test
+        @DisplayName("Boundary: Over 30 with exactly 2 triggers should be Borderline")
+        void testOver30With2Triggers() {
+            List<NoteBean> notes = List.of(createNote(1L, "Fumeur, Cholestérol"));
+            when(microservicesProxy.getPatientById(1L)).thenReturn(Optional.of(patientOver30));
+            when(microservicesProxy.getNotesByPatId(1L)).thenReturn(notes);
+
+            RiskLevel result = riskService.calculateRisk(1L);
+            assertThat(result.getRiskLevel()).isEqualTo("Borderline");
+        }
+
+        @Test
+        @DisplayName("Boundary: Over 30 with exactly 5 triggers should be Borderline")
+        void testOver30With5Triggers() {
+            List<NoteBean> notes = List.of(createNote(1L, "Fumeur, Cholestérol, Vertiges, Poids, Anormal"));
+            when(microservicesProxy.getPatientById(1L)).thenReturn(Optional.of(patientOver30));
+            when(microservicesProxy.getNotesByPatId(1L)).thenReturn(notes);
+
+            RiskLevel result = riskService.calculateRisk(1L);
+            assertThat(result.getRiskLevel()).isEqualTo("Borderline");
+        }
+
+        @Test
+        @DisplayName("Boundary: Over 30 with exactly 6 triggers should be In Danger")
+        void testOver30With6Triggers() {
+            List<NoteBean> notes = List.of(createNote(1L, "Fumeur, Cholestérol, Vertiges, Poids, Anormal, Rechute"));
+            when(microservicesProxy.getPatientById(1L)).thenReturn(Optional.of(patientOver30));
+            when(microservicesProxy.getNotesByPatId(1L)).thenReturn(notes);
+
+            RiskLevel result = riskService.calculateRisk(1L);
+            assertThat(result.getRiskLevel()).isEqualTo("In Danger");
+        }
+
+        @Test
+        @DisplayName("Boundary: Male under 30 with exactly 3 triggers should be In Danger")
+        void testMaleUnder30With3Triggers() {
+            List<NoteBean> notes = List.of(createNote(1L, "Fumeur, Cholestérol, Vertiges"));
+            when(microservicesProxy.getPatientById(2L)).thenReturn(Optional.of(patientMaleUnder30));
+            when(microservicesProxy.getNotesByPatId(2L)).thenReturn(notes);
+
+            RiskLevel result = riskService.calculateRisk(2L);
+            assertThat(result.getRiskLevel()).isEqualTo("In Danger");
+        }
+
+        @Test
+        @DisplayName("Boundary: Male under 30 with exactly 5 triggers should be Early onset")
+        void testMaleUnder30With5Triggers() {
+            List<NoteBean> notes = List.of(createNote(1L, "Fumeur, Cholestérol, Vertiges, Poids, Anormal"));
+            when(microservicesProxy.getPatientById(2L)).thenReturn(Optional.of(patientMaleUnder30));
+            when(microservicesProxy.getNotesByPatId(2L)).thenReturn(notes);
+
+            RiskLevel result = riskService.calculateRisk(2L);
+            assertThat(result.getRiskLevel()).isEqualTo("Early onset");
+        }
+
+        @Test
+        @DisplayName("Boundary: Female under 30 with exactly 7 triggers should be Early onset")
+        void testFemaleUnder30With7Triggers() {
+            List<NoteBean> notes = List.of(createNote(1L, "Fumeuse, Cholestérol, Vertiges, Poids, Anormal, Rechute, Réaction"));
+            when(microservicesProxy.getPatientById(3L)).thenReturn(Optional.of(patientFemaleUnder30));
+            when(microservicesProxy.getNotesByPatId(3L)).thenReturn(notes);
+
+            RiskLevel result = riskService.calculateRisk(3L);
+            assertThat(result.getRiskLevel()).isEqualTo("Early onset");
+        }
     }
 }
