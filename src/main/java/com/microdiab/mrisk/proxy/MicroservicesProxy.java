@@ -17,7 +17,7 @@ import java.util.Optional;
  * The {@code MicroservicesProxy} interface provides methods to interact with the microservices
  * via the gateway. It is used to fetch patient and note data.</p>
  */
-@FeignClient(name = "mgateway", url = "localhost:9010", configuration = FeignConfig.class)
+@FeignClient(name = "mgateway", url = "${mgateway.url:http://mgateway:9010}", configuration = FeignConfig.class)
 public interface MicroservicesProxy {
 
     /**
