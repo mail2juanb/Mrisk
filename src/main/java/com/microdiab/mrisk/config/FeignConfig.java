@@ -51,6 +51,7 @@ public class FeignConfig {
                     // Propagate B3 headers for distributed tracing
                     requestTemplate.header("X-B3-TraceId", currentSpan.context().traceId());
                     requestTemplate.header("X-B3-SpanId", currentSpan.context().spanId());
+                    requestTemplate.header("X-B3-Sampled", "1");
                 }
             }
         };

@@ -2,6 +2,7 @@ package com.microdiab.mrisk.controller;
 
 import com.microdiab.mrisk.model.RiskLevel;
 import com.microdiab.mrisk.service.RiskService;
+import com.microdiab.mrisk.tracing.TracingHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +20,9 @@ class RiskControllerTest {
 
     @Mock
     private RiskService riskService;
+
+    @Mock
+    private TracingHelper tracing;
 
     @InjectMocks
     private RiskController riskController;

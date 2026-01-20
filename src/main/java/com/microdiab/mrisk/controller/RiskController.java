@@ -2,6 +2,8 @@ package com.microdiab.mrisk.controller;
 
 import com.microdiab.mrisk.model.RiskLevel;
 import com.microdiab.mrisk.service.RiskService;
+import com.microdiab.mrisk.tracing.TracingHelper;
+import io.micrometer.tracing.annotation.NewSpan;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,6 +32,12 @@ public class RiskController {
     private RiskService riskService;
 
     /**
+     * Tracing Service.
+     */
+    @Autowired
+    private TracingHelper tracing;
+
+    /**
      * Retrieves the risk level for a patient identified by their ID.
      *
      * @param patId The ID of the patient.
@@ -48,8 +56,16 @@ public class RiskController {
         @ApiResponse(responseCode = "500", description = "Internal server error while calculating risk level")
     })
     @GetMapping("/risk/{patId}")
+    @NewSpan("mrisk-get-risk-level")
     public ResponseEntity<RiskLevel> getRiskLevel(@PathVariable Long patId) {
+
+        tracing.tag("endpoint", "/risk/{patId}");
+        tracing.tag("patient.id", patId);
+        tracing.event("Calculating risk level for patient");
+
         RiskLevel riskLevel = riskService.calculateRisk(patId);
+        tracing.event("Risk level calculated successfully");
+
         return ResponseEntity.ok(riskLevel);
     }
 }

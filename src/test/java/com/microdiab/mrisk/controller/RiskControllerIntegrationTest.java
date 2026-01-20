@@ -3,6 +3,7 @@ package com.microdiab.mrisk.controller;
 import com.microdiab.mrisk.exception.PatientNotFoundException;
 import com.microdiab.mrisk.model.RiskLevel;
 import com.microdiab.mrisk.service.RiskService;
+import com.microdiab.mrisk.tracing.TracingHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -26,6 +27,10 @@ class RiskControllerIntegrationTest {
 
     @MockitoBean
     private RiskService riskService;
+
+    @MockitoBean
+    private TracingHelper tracing;
+
 
     @Test
     void getRiskLevel_ShouldReturnNone_WhenNoRisk() throws Exception {
