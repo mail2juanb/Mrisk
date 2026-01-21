@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+
 /**
  * Exception thrown when a requested resource is not found.
  * This exception is annotated with {@link ResponseStatus} to return a 404 (Not Found) HTTP status.

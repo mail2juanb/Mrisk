@@ -1,6 +1,5 @@
 package com.microdiab.mrisk.bean;
 
-import com.microdiab.mrisk.bean.PatientBean;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -8,11 +7,12 @@ import java.time.LocalDate;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+
 public class PatientBeanTest {
 
     @Test
     void testConstructorsAndGettersSetters() {
-        // Test du constructeur sans arguments
+        // Manufacturer test without arguments
         PatientBean patient1 = new PatientBean();
         patient1.setLastname("Dupont");
         patient1.setFirstname("Jean");
@@ -28,7 +28,7 @@ public class PatientBeanTest {
         assertThat(patient1.getAddress()).isEqualTo("123 Rue de Paris");
         assertThat(patient1.getPhone()).isEqualTo("0123456789");
 
-        // Test du constructeur avec arguments
+        // Manufacturer test with arguments
         PatientBean patient2 = new PatientBean("Martin", "Marie", LocalDate.of(1985, 8, 20), "F", "456 Rue de Lyon", "0987654321");
         assertThat(patient2.getLastname()).isEqualTo("Martin");
         assertThat(patient2.getFirstname()).isEqualTo("Marie");
@@ -38,19 +38,10 @@ public class PatientBeanTest {
         assertThat(patient2.getPhone()).isEqualTo("0987654321");
     }
 
-//    @Test
-//    void testGetAge() {
-//        PatientBean patient = new PatientBean();
-//        patient.setDateofbirth(LocalDate.of(1990, 5, 15));
-//
-//        // Vérifie que l'âge est correctement calculé
-//        int expectedAge = LocalDate.now().getYear() - 1990;
-//        assertThat(patient.getAge()).isEqualTo(expectedAge);
-//    }
     @Test
     void testGetAge() {
         PatientBean patient = new PatientBean();
-        patient.setDateofbirth(LocalDate.of(1990, 1, 1)); // Anniversaire déjà passé
+        patient.setDateofbirth(LocalDate.of(1990, 1, 1)); // Birthday already passed
 
         int expectedAge = LocalDate.now().getYear() - 1990;
         assertThat(patient.getAge()).isEqualTo(expectedAge);
@@ -61,7 +52,7 @@ public class PatientBeanTest {
         PatientBean patient = new PatientBean();
         patient.setDateofbirth(null);
 
-        // Vérifie qu'une exception est levée si la date de naissance est null
+        // Check that an exception is raised if the date of birth is null.
         assertThatThrownBy(patient::getAge)
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("The patient's date of birth is required to calculate their age.");
@@ -72,7 +63,6 @@ public class PatientBeanTest {
         PatientBean patient = new PatientBean("Dupont", "Jean", LocalDate.of(1990, 5, 15), "M", "123 Rue de Paris", "0123456789");
         String toString = patient.toString();
 
-        // Vérifie que la méthode toString() contient les informations attendues
         assertThat(toString).contains("Dupont", "Jean", "1990-05-15", "M", "123 Rue de Paris", "0123456789");
     }
 
@@ -80,14 +70,11 @@ public class PatientBeanTest {
     void testGetIdAndSetId() {
         PatientBean patient = new PatientBean();
 
-        // Vérifie que l'id est null par défaut
         assertThat(patient.getId()).isNull();
 
-        // Définit un id et vérifie qu'il est correctement récupéré
         patient.setId(123L);
         assertThat(patient.getId()).isEqualTo(123L);
 
-        // Change l'id et vérifie à nouveau
         patient.setId(456L);
         assertThat(patient.getId()).isEqualTo(456L);
     }

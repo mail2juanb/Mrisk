@@ -52,7 +52,7 @@ class RequestLoggingFilterTest {
     void setUp() {
         filter = new RequestLoggingFilter();
 
-        // Configuration du logger pour capturer les logs
+        // Configuring the logger to capture logs
         Logger logger = (Logger) LoggerFactory.getLogger(RequestLoggingFilter.class);
         listAppender = new ListAppender<>();
         listAppender.start();
@@ -176,8 +176,7 @@ class RequestLoggingFilterTest {
         verify(filterChain).doFilter(request, response);
         verify(request).getRemoteAddr();
         verify(request).getHeader("User-Agent");
-        verify(request, times(2)).getQueryString(); // appelé 2 fois : vérification null et concaténation
-
+        verify(request, times(2)).getQueryString();
         List<ILoggingEvent> logsList = listAppender.list;
         assertThat(logsList).hasSize(1);
         assertThat(logsList.getFirst().getLevel()).isEqualTo(Level.WARN);
@@ -210,7 +209,7 @@ class RequestLoggingFilterTest {
         assertThat(logsList.getFirst().getLevel()).isEqualTo(Level.WARN);
         assertThat(logsList.getFirst().getFormattedMessage())
                 .contains("127.0.0.1")
-                .contains("null") // User-Agent null sera logué comme "null"
+                .contains("null")
                 .contains("DELETE");
     }
 

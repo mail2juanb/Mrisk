@@ -1,9 +1,9 @@
 package com.microdiab.mrisk.bean;
 
-import com.microdiab.mrisk.bean.NoteBean;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 public class NoteBeanTest {
 

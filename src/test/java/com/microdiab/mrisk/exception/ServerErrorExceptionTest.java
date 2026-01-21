@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ServerErrorExceptionTest {
 
-    // Vérifier que l'exception est bien levée avec le bon message.
     @Test
     public void testServerErrorException_Message() {
         // Arrange
@@ -19,7 +18,6 @@ public class ServerErrorExceptionTest {
                 () -> { throw new ServerErrorException(expectedMessage); }
         );
 
-        // Vérifie que le message est correct
         assertEquals(expectedMessage, exception.getMessage());
     }
 }

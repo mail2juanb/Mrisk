@@ -38,21 +38,21 @@ class RiskServiceTest {
 
     @BeforeEach
     void setUp() {
-        // Patient de plus de 30 ans (né il y a 35 ans)
+        // Patient over 30 years of age (born 35 years ago)
         patientOver30 = new PatientBean();
         patientOver30.setId(1L);
         patientOver30.setLastname("Doe");
         patientOver30.setDateofbirth(LocalDate.now().minusYears(35));
         patientOver30.setGender("M");
 
-        // Homme de moins de 30 ans (né il y a 25 ans)
+        // Man under 30 years old (born 25 years ago)
         patientMaleUnder30 = new PatientBean();
         patientMaleUnder30.setId(2L);
         patientMaleUnder30.setLastname("Smith");
         patientMaleUnder30.setDateofbirth(LocalDate.now().minusYears(25));
         patientMaleUnder30.setGender("M");
 
-        // Femme de moins de 30 ans (née il y a 28 ans)
+        // Woman under 30 (born 28 years ago)
         patientFemaleUnder30 = new PatientBean();
         patientFemaleUnder30.setId(3L);
         patientFemaleUnder30.setLastname("Johnson");
@@ -620,7 +620,7 @@ class RiskServiceTest {
             RiskLevel result = riskService.calculateRisk(1L);
 
             // Assert
-            assertThat(result.getRiskLevel()).isEqualTo("Borderline"); // 2 déclencheurs
+            assertThat(result.getRiskLevel()).isEqualTo("Borderline");
         }
 
         @Test
@@ -639,7 +639,7 @@ class RiskServiceTest {
             RiskLevel result = riskService.calculateRisk(1L);
 
             // Assert
-            assertThat(result.getRiskLevel()).isEqualTo("Borderline"); // 3 déclencheurs
+            assertThat(result.getRiskLevel()).isEqualTo("Borderline");
         }
     }
 
@@ -720,7 +720,6 @@ class RiskServiceTest {
             RiskLevel result = riskService.calculateRisk(1L);
 
             // Assert
-            // Fumeur apparaît 3 fois + Cholestérol + Vertiges = 5 triggers
             assertThat(result.getRiskLevel()).isEqualTo("Borderline");
         }
 
@@ -757,7 +756,6 @@ class RiskServiceTest {
             RiskLevel result = riskService.calculateRisk(1L);
 
             // Assert
-            // "fumeur" est dans "Nonfumeur", "Cholestérol" est dans "anticholestérol"
             assertThat(result.getRiskLevel()).isEqualTo("Borderline");
         }
 
@@ -885,7 +883,6 @@ class RiskServiceTest {
         @Test
         @DisplayName("Should handle gender case variations (m, M, f, F)")
         void shouldHandleGenderCaseVariations() {
-            // Test with lowercase 'm'
             PatientBean patientLowercaseM = new PatientBean();
             patientLowercaseM.setId(10L);
             patientLowercaseM.setDateofbirth(LocalDate.now().minusYears(25));

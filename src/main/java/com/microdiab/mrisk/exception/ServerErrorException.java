@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+
 /**
  * Exception thrown when an internal server error occurs.
  * This exception is annotated with {@link ResponseStatus} to return a 500 (Internal Server Error) HTTP status.
