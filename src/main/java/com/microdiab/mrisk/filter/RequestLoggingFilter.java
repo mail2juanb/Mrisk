@@ -60,7 +60,7 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        // Récupérer l'utilisateur authentifié
+        // Retrieve the authenticated user
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.isAuthenticated()) {
@@ -71,7 +71,7 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
 
             logger.debug("User '{}' with roles [{}] accessed {} {}", username, roles, method, uri);
         } else {
-            // Log pour les requêtes non authentifiées
+            // Log for unauthenticated requests
             String clientIp = request.getRemoteAddr();
             String userAgent = request.getHeader("User-Agent");
             String queryString = request.getQueryString() != null ? "?" + request.getQueryString() : "";
@@ -79,7 +79,7 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
                     clientIp, userAgent, request.getMethod(), request.getRequestURI(), queryString);
         }
 
-        // Continuer la chaîne de filtres
+        // Continue the filter chain
         filterChain.doFilter(request, response);
     }
 }

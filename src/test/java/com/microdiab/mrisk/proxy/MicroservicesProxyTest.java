@@ -22,10 +22,6 @@ class MicroservicesProxyTest {
     @Mock
     private MicroservicesProxy microservicesProxy;
 
-    @BeforeEach
-    void setUp() {
-        // Configuration du mock si nécessaire
-    }
 
     @Test
     void getPatientById_shouldReturnPatient_whenPatientExists() {

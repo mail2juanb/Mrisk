@@ -19,7 +19,7 @@ class CustomErrorDecoderTest {
     void setUp() {
         customErrorDecoder = new CustomErrorDecoder();
 
-        // Créer une requête fictive pour les tests
+        // Create a dummy query for testing purposes
         request = Request.create(
                 Request.HttpMethod.GET,
                 "/test",
@@ -47,7 +47,7 @@ class CustomErrorDecoderTest {
 
     @Test
     void testDecode_404_EmptyNotesException_WithEmpty() {
-        // Arrange - Test avec le mot "empty" dans le body
+        // Arrange
         String methodKey = "PatientClient#getNotes(Long)";
         String body = "The notes are empty";
         Response response = createResponse(404, body);
@@ -62,7 +62,7 @@ class CustomErrorDecoderTest {
 
     @Test
     void testDecode_404_EmptyNotesException_CaseInsensitive() {
-        // Arrange - Test l'insensibilité à la casse pour "notes"
+        // Arrange
         String methodKey = "PatientClient#getNotes(Long)";
         String body = "NOTES NOT FOUND";
         Response response = createResponse(404, body);
@@ -77,7 +77,7 @@ class CustomErrorDecoderTest {
 
     @Test
     void testDecode_404_EmptyNotesException_CaseInsensitiveEmpty() {
-        // Arrange - Test l'insensibilité à la casse pour "empty"
+        // Arrange
         String methodKey = "PatientClient#getNotes(Long)";
         String body = "The data is EMPTY";
         Response response = createResponse(404, body);
@@ -107,7 +107,7 @@ class CustomErrorDecoderTest {
 
     @Test
     void testDecode_404_PatientNotFoundException_CaseInsensitive() {
-        // Arrange - Test l'insensibilité à la casse pour "patient"
+        // Arrange
         String methodKey = "PatientClient#getPatient(Long)";
         String body = "PATIENT does not exist";
         Response response = createResponse(404, body);
@@ -138,7 +138,7 @@ class CustomErrorDecoderTest {
 
     @Test
     void testDecode_404_NotFoundException_WithNullBody() {
-        // Arrange - Test 404 avec body null
+        // Arrange
         String methodKey = "SomeClient#getResource()";
         Response response = createResponseWithoutBody(404);
 
@@ -152,7 +152,7 @@ class CustomErrorDecoderTest {
 
     @Test
     void testDecode_404_NotFoundException_WithEmptyBody() {
-        // Arrange - Test 404 avec body vide
+        // Arrange
         String methodKey = "SomeClient#getResource()";
         Response response = createResponse(404, "");
 
@@ -166,7 +166,7 @@ class CustomErrorDecoderTest {
 
     @Test
     void testDecode_404_NotFoundException_WithBodyNotContainingNotesOrPatient() {
-        // Arrange - Test 404 avec body qui ne contient ni "notes" ni "patient"
+        // Arrange
         String methodKey = "SomeClient#getResource()";
         String body = "Something else not found";
         Response response = createResponse(404, body);
@@ -245,7 +245,7 @@ class CustomErrorDecoderTest {
 
     @Test
     void testDecode_501_ServerErrorException() {
-        // Arrange - Test d'autres codes >= 500
+        // Arrange
         String methodKey = "PatientClient#getPatient(Long)";
         String body = "Not implemented";
         Response response = createResponse(501, body);
@@ -271,7 +271,7 @@ class CustomErrorDecoderTest {
 
         // Assert
         assertNotNull(exception);
-        // Le defaultErrorDecoder retourne une FeignException
+        // The CustomErrorDecoder returns a FeignException.
         assertTrue(exception.getClass().getName().contains("feign"));
     }
 
@@ -309,7 +309,7 @@ class CustomErrorDecoderTest {
         // Arrange
         String methodKey = "PatientClient#getPatient(Long)";
 
-        // Créer une réponse avec un body qui va lancer une IOException lors de la lecture
+        // Create a response with a body that will throw an IOException when read
         Response.Body body = new Response.Body() {
             @Override
             public Integer length() {
@@ -349,10 +349,10 @@ class CustomErrorDecoderTest {
         Exception exception = customErrorDecoder.decode(methodKey, response);
 
         // Assert
-        // Même avec une IOException, le code continue et retourne une exception appropriée
+        // Even with an IOException, the code continues and returns an appropriate exception.
         assertInstanceOf(BadRequestException.class, exception);
         assertTrue(exception.getMessage().contains("Incorrect request"));
-        assertTrue(exception.getMessage().contains("null")); // Le body sera null car non lisible
+        assertTrue(exception.getMessage().contains("null")); // The body will be null because it is unreadable.
     }
 
     @Test
@@ -403,7 +403,7 @@ class CustomErrorDecoderTest {
         assertEquals("Resource not found: " + methodKey, exception.getMessage());
     }
 
-    // Méthodes utilitaires pour créer des réponses de test
+    // Useful methods for creating test responses
 
     private Response createResponse(int status, String body) {
         return Response.builder()

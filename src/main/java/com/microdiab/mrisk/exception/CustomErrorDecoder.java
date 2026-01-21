@@ -40,7 +40,7 @@ public class CustomErrorDecoder implements ErrorDecoder {
     @Override
     public Exception decode (String invoqueur, Response response) {
 
-        // Lire le corps de la réponse
+        // Read the body of the answer
         String body = null;
 
         if (response.body() != null) {
@@ -51,14 +51,9 @@ public class CustomErrorDecoder implements ErrorDecoder {
             }
         }
 
-        // Reconstruire la réponse pour qu'elle reste lisible
-//        Response newResponse = response.toBuilder()
-//                .body(body, StandardCharsets.UTF_8)
-//                .build();
-
-        // Gestion des erreurs spécifiques
+        // Specific error handling
         if (response.status() == 404) {
-            // Vérifie le corps de la réponse pour différencier les erreurs
+            // Check the body of the response to differentiate between errors.
             if (body != null) {
                 if (body.toLowerCase().contains("notes") || body.toLowerCase().contains("empty")) {
                     return new EmptyNotesException("The patient's notes are empty.");
@@ -77,7 +72,7 @@ public class CustomErrorDecoder implements ErrorDecoder {
                 return new ServerErrorException("Server error : " + body);
             }
 
-        // Par défaut, déléguer à l'ErrorDecoder par défaut
+        // By default, delegate to ErrorDecoder
         return defaultErrorDecoder.decode(invoqueur, response);
     }
 }

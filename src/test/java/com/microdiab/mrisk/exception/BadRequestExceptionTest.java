@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BadRequestExceptionTest {
 
-    // Vérifier que l'exception est bien levée avec le bon message.
+
     @Test
     public void testBadRequestException_Message() {
         // Arrange
@@ -19,7 +19,6 @@ public class BadRequestExceptionTest {
                 () -> { throw new BadRequestException(expectedMessage); }
         );
 
-        // Vérifie que le message est correct
         assertEquals(expectedMessage, exception.getMessage());
     }
 }

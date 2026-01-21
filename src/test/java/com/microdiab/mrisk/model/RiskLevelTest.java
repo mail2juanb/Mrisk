@@ -7,7 +7,6 @@ class RiskLevelTest {
 
     @Test
     void testNoArgsConstructor() {
-        // Test du constructeur sans arguments
         RiskLevel riskLevel = new RiskLevel();
         assertThat(riskLevel).isNotNull();
         assertThat(riskLevel.getPatId()).isNull();
@@ -16,7 +15,6 @@ class RiskLevelTest {
 
     @Test
     void testAllArgsConstructor() {
-        // Test du constructeur avec arguments
         Long patId = 123L;
         String riskLevelValue = "HIGH";
         RiskLevel riskLevel = new RiskLevel(riskLevelValue, patId);
@@ -27,7 +25,6 @@ class RiskLevelTest {
 
     @Test
     void testGettersAndSetters() {
-        // Test des getters et setters
         RiskLevel riskLevel = new RiskLevel();
         Long patId = 456L;
         String riskLevelValue = "LOW";
@@ -41,7 +38,6 @@ class RiskLevelTest {
 
     @Test
     void testToString() {
-        // Test de la méthode toString()
         Long patId = 789L;
         String riskLevelValue = "MEDIUM";
         RiskLevel riskLevel = new RiskLevel(riskLevelValue, patId);

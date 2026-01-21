@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class EmptyNotesExceptionTest {
 
-    // Vérifier que l'exception est bien levée avec le bon message.
     @Test
     public void testEmptyNotesException_Message() {
         // Arrange
@@ -19,7 +18,6 @@ public class EmptyNotesExceptionTest {
                 () -> { throw new EmptyNotesException(expectedMessage); }
         );
 
-        // Vérifie que le message est correct
         assertEquals(expectedMessage, exception.getMessage());
     }
 }
